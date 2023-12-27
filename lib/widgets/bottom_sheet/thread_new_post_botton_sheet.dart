@@ -1,18 +1,59 @@
 import 'package:challenge/constants/gaps.dart';
 import 'package:challenge/constants/sizes.dart';
+import 'package:challenge/posts/view_models/post_vm.dart';
+import 'package:challenge/utils/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
-class ThreadNewPostBottomSheet extends StatefulWidget {
+class ThreadNewPostBottomSheet extends ConsumerStatefulWidget {
   const ThreadNewPostBottomSheet({super.key});
 
   @override
-  State<ThreadNewPostBottomSheet> createState() =>
-      _ThreadNewPostBottomSheetState();
+  ThreadNewPostBottomSheetState createState() =>
+      ThreadNewPostBottomSheetState();
 }
 
-class _ThreadNewPostBottomSheetState extends State<ThreadNewPostBottomSheet> {
+class ThreadNewPostBottomSheetState
+    extends ConsumerState<ThreadNewPostBottomSheet> {
   bool _hasContent = false;
+
+  final TextEditingController _controller = TextEditingController();
+  String _contents = "";
+
+  Future<void> _onPost() async {
+    if (_contents == "") return;
+    await ref.read(postProvider.notifier).uploadPost(
+          contents: _contents,
+        );
+
+    if (!mounted) return;
+    if (ref.read(postProvider).hasError) {
+      final error = ref.read(postProvider).error as FirebaseException;
+      showFirebaseErrorSnack(context, error);
+      return;
+    }
+    context.pop();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      setState(() {
+        _contents = _controller.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -61,6 +102,7 @@ class _ThreadNewPostBottomSheetState extends State<ThreadNewPostBottomSheet> {
                             ),
                           ),
                           TextField(
+                            controller: _controller,
                             onChanged: (String value) {
                               setState(() {
                                 _hasContent = value != "";
@@ -102,15 +144,20 @@ class _ThreadNewPostBottomSheetState extends State<ThreadNewPostBottomSheet> {
                     color: Colors.grey,
                   ),
                 ),
-                Text(
-                  "Post",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _hasContent
-                        ? Colors.blueAccent
-                        : Colors.blueAccent.shade100,
-                  ),
-                ),
+                ref.watch(postProvider).isLoading
+                    ? const CircularProgressIndicator.adaptive()
+                    : GestureDetector(
+                        onTap: _onPost,
+                        child: Text(
+                          "Post",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: _hasContent
+                                ? Colors.blueAccent
+                                : Colors.blueAccent.shade100,
+                          ),
+                        ),
+                      ),
               ],
             ),
           ),
