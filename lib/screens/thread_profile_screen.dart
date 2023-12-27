@@ -1,6 +1,5 @@
 import 'package:challenge/constants/gaps.dart';
 import 'package:challenge/constants/sizes.dart';
-import 'package:challenge/data/post_data.dart';
 import 'package:challenge/posts/models/post_model.dart';
 import 'package:challenge/router.dart';
 import 'package:challenge/utils/utils.dart';

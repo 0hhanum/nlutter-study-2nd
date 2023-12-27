@@ -16,7 +16,6 @@ class TimelineViewModel extends AsyncNotifier<List<PostModel>> {
         "id": doc.id,
       }),
     );
-    print(posts);
     return posts.toList();
   }
 
