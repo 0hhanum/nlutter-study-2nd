@@ -50,6 +50,7 @@ class ThreadNewPostBottomSheetState
     if (_contents == "") return;
     await ref.read(postProvider.notifier).uploadPost(
           contents: _contents,
+          images: _images,
         );
 
     if (!mounted) return;
