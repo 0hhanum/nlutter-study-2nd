@@ -12,6 +12,14 @@ class PostModel {
     required this.createdAt,
   });
 
+  PostModel.fromJson(Map<String, dynamic> json)
+      : id = json["id"],
+        contents = json["contents"],
+        author = json["author"],
+        authorUid = json["authorUid"],
+        imageURLs = List<String>.from(json["imageURLs"]),
+        createdAt = json["createdAt"];
+
   Map<String, dynamic> toJson() {
     return {
       "id": id,

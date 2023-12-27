@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostRepository {
   static const _postCollection = "threadPost";
+  static const _fetchLimit = 5;
+
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -34,7 +36,19 @@ class PostRepository {
     return imageTasks;
   }
 
-  // fetchPosts
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchPosts({
+    int? lastItemCreatedAt,
+  }) {
+    const orderBy = "createdAt";
+    final query = _db
+        .collection(_postCollection)
+        .orderBy(orderBy, descending: true)
+        .limit(_fetchLimit);
+    if (lastItemCreatedAt == null) {
+      return query.get();
+    }
+    return query.startAfter([lastItemCreatedAt]).get();
+  }
 }
 
 final postRepoProvider = Provider((ref) => PostRepository());

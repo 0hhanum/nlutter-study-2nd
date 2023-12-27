@@ -1,6 +1,7 @@
 import 'package:challenge/constants/gaps.dart';
 import 'package:challenge/constants/sizes.dart';
 import 'package:challenge/data/post_data.dart';
+import 'package:challenge/posts/models/post_model.dart';
 import 'package:challenge/router.dart';
 import 'package:challenge/utils/utils.dart';
 import 'package:challenge/widgets/home_screens/thread_post_card.dart';
@@ -47,13 +48,7 @@ class _ThreadProfileScreenState extends State<ThreadProfileScreen> {
                 ),
                 itemCount: 21,
                 itemBuilder: (context, index) {
-                  return ThreadPostCard(
-                    authorNickname: threadPostData[index]["authorNickname"],
-                    isCertificated: threadPostData[index]["isCertificated"],
-                    text: threadPostData[index]["text"],
-                    contentImageUrls: threadPostData[index]["contentImageUrl"],
-                    avatarUrl: threadPostData[index]["avatarUrl"],
-                  );
+                  return const Center();
                 },
                 separatorBuilder: (context, index) => const Divider(
                   height: Sizes.size40,
@@ -67,11 +62,14 @@ class _ThreadProfileScreenState extends State<ThreadProfileScreen> {
                 itemCount: 21,
                 itemBuilder: (context, index) {
                   return ThreadPostCard(
-                    authorNickname: threadPostData[index]["authorNickname"],
-                    isCertificated: threadPostData[index]["isCertificated"],
-                    text: threadPostData[index]["text"],
-                    contentImageUrls: threadPostData[index]["contentImageUrl"],
-                    avatarUrl: threadPostData[index]["avatarUrl"],
+                    post: PostModel(
+                      author: "han",
+                      id: "",
+                      contents: "temp",
+                      authorUid: "",
+                      imageURLs: [],
+                      createdAt: 123,
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) => const Divider(
