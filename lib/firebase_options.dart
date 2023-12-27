@@ -65,10 +65,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAbWJQNDEZPqYzaSnazO7gN6agnqw7tWsY',
-    appId: '1:317429734420:ios:f24ed45a3a305bcba11b01',
+    appId: '1:317429734420:ios:b52a637936c0fc3ca11b01',
     messagingSenderId: '317429734420',
     projectId: 'thickthock',
     storageBucket: 'thickthock.appspot.com',
-    iosBundleId: 'com.example.challenge',
+    iosBundleId: 'com.example.challengehanum',
   );
 }
