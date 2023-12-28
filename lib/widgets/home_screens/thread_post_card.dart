@@ -151,7 +151,7 @@ class ThreadPostCard extends StatelessWidget {
               ),
             ),
             Gaps.h4,
-            if (false)
+            if (true)
               const FaIcon(
                 FontAwesomeIcons.certificate,
                 color: Colors.blueAccent,
