@@ -49,6 +49,14 @@ class PostRepository {
     }
     return query.startAfter([lastItemCreatedAt]).get();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> searchPost(String value) async {
+    return await _db
+        .collection(_postCollection)
+        .where("contents", isGreaterThanOrEqualTo: value)
+        .where("contents", isLessThanOrEqualTo: '$value\uf8ff')
+        .get();
+  }
 }
 
 final postRepoProvider = Provider((ref) => PostRepository());
