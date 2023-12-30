@@ -1,3 +1,4 @@
+import 'package:challenge/posts/models/post_model.dart';
 import 'package:challenge/utils/utils.dart';
 import 'package:challenge/widgets/bottom_sheet/thread_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +9,9 @@ import 'package:challenge/constants/sizes.dart';
 class ThreadPostCard extends StatelessWidget {
   const ThreadPostCard({
     super.key,
-    required this.authorNickname,
-    this.avatarUrl,
-    this.contentImageUrls,
-    this.isCertificated = false,
-    text,
-  }) : text = text ?? "";
-  final String authorNickname;
-  final bool isCertificated;
-  final String? avatarUrl;
-  final List<String>? contentImageUrls;
-  final String text;
+    required this.post,
+  });
+  final PostModel post;
 
   void _showPostMenu(BuildContext context) {
     final isDark = isDarkMode(context);
@@ -66,14 +59,14 @@ class ThreadPostCard extends StatelessWidget {
                 children: [
                   _titleBar(context),
                   Gaps.v8,
-                  Text(text),
+                  Text(post.contents),
                   Gaps.v8,
-                  if (contentImageUrls != null)
+                  if (post.imageURLs.isNotEmpty)
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          for (var contentImageUrl in contentImageUrls!)
+                          for (var contentImageUrl in post.imageURLs)
                             _contentImage(contentImageUrl),
                         ],
                       ),
@@ -151,14 +144,14 @@ class ThreadPostCard extends StatelessWidget {
         Row(
           children: [
             Text(
-              authorNickname,
+              post.author,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: Sizes.size16,
               ),
             ),
             Gaps.h4,
-            if (isCertificated)
+            if (true)
               const FaIcon(
                 FontAwesomeIcons.certificate,
                 color: Colors.blueAccent,
@@ -240,13 +233,8 @@ class ThreadPostCard extends StatelessWidget {
           ),
           child: CircleAvatar(
             radius: Sizes.size24,
-            foregroundImage: avatarUrl != null
-                ? NetworkImage(
-                    avatarUrl!,
-                  )
-                : null,
             child: Text(
-              authorNickname.substring(0, 1),
+              post.author[0],
             ),
           ),
         ),

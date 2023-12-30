@@ -1,7 +1,9 @@
 import 'package:challenge/commons/repos/app_config_repo.dart';
 import 'package:challenge/commons/view_models/app_config_vm.dart';
 import 'package:challenge/constants/sizes.dart';
+import 'package:challenge/firebase_options.dart';
 import 'package:challenge/router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,9 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   GoRouter.optionURLReflectsImperativeAPIs = true; // flutter web 브라우저 라우트 표시
   final preferences = await SharedPreferences.getInstance();
   final repository = AppConfigRepository(preferences);
+
   runApp(
     ProviderScope(
       overrides: [
@@ -28,11 +35,10 @@ class FlutterApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(appConfigProvider).isDarkMode;
     return MaterialApp.router(
-      routerConfig: router,
-      themeMode: ref.watch(appConfigProvider).isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light,
+      routerConfig: ref.read(routerProvider),
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       darkTheme: ThemeData(
         textTheme: Typography.whiteCupertino,
         useMaterial3: true,
@@ -44,16 +50,16 @@ class FlutterApp extends ConsumerWidget {
         ),
         inputDecorationTheme: InputDecorationTheme(
           hintStyle: TextStyle(
-            color: Colors.grey.shade900,
+            color: isDark ? Colors.grey : Colors.grey.shade900,
           ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.grey.shade900,
+              color: isDark ? Colors.grey : Colors.grey.shade900,
             ),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.grey.shade900,
+              color: isDark ? Colors.grey : Colors.grey.shade900,
             ),
           ),
         ),
