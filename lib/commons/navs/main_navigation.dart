@@ -49,15 +49,17 @@ class MainNavigation extends StatelessWidget {
             )
             .toList(),
       ),
-      body: Stack(
-        children: MainNavigationTab.values
-            .map(
-              (value) => Offstage(
-                offstage: value != tab,
-                child: value.screen,
-              ),
-            )
-            .toList(),
+      body: SafeArea(
+        child: Stack(
+          children: MainNavigationTab.values
+              .map(
+                (value) => Offstage(
+                  offstage: value != tab,
+                  child: value.screen,
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
