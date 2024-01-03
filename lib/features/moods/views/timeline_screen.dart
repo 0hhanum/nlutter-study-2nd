@@ -11,26 +11,41 @@ import 'package:timeago/timeago.dart' as timeAgo;
 class TimelineScreen extends ConsumerWidget {
   const TimelineScreen({super.key});
   static const String routeURL = "/timeline";
-  void _onLongPress(BuildContext context) {
+  void _onLongPress({
+    required BuildContext context,
+    required String targetId,
+    required WidgetRef ref,
+  }) {
     showCupertinoModalPopup(
       context: context,
-      builder: (context) => CupertinoActionSheet(
-        title: const Text("Delete post"),
-        message: const Text("Are you sure?"),
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () {},
-            isDestructiveAction: true,
-            child: const Text("Delete"),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              context.pop();
-            },
-            child: const Text("Cancel"),
-          ),
-        ],
-      ),
+      builder: (context) => _deleteActionSheet(ref, targetId, context),
+    );
+  }
+
+  CupertinoActionSheet _deleteActionSheet(
+    WidgetRef ref,
+    String targetId,
+    BuildContext context,
+  ) {
+    return CupertinoActionSheet(
+      title: const Text("Delete post"),
+      message: const Text("Are you sure?"),
+      actions: [
+        CupertinoActionSheetAction(
+          onPressed: () async {
+            await ref.read(timelineVM.notifier).deleteMood(targetId);
+            context.pop();
+          },
+          isDestructiveAction: true,
+          child: const Text("Delete"),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            context.pop();
+          },
+          child: const Text("Cancel"),
+        ),
+      ],
     );
   }
 
@@ -52,7 +67,13 @@ class TimelineScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onLongPress: isAuthor ? () => _onLongPress(context) : null,
+                    onLongPress: isAuthor
+                        ? () => _onLongPress(
+                              context: context,
+                              targetId: mood.id,
+                              ref: ref,
+                            )
+                        : null,
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(Sizes.size16),

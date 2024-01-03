@@ -11,6 +11,10 @@ class MoodRepository {
     await _db.collection(moodCollection).add(moodJson);
   }
 
+  Future<void> deleteMood(String id) async {
+    await _db.collection(moodCollection).doc(id).delete();
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getMoods() async {
     final query =
         _db.collection(moodCollection).orderBy("createdAt", descending: true);

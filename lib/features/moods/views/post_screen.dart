@@ -37,6 +37,7 @@ class PostScreenState extends ConsumerState<PostScreen> {
     final user = ref.read(authRepo).user;
     if (user == null) return;
     final moodModel = MoodModel(
+      id: "",
       text: _text,
       uid: user.uid,
       mood: _selectedMood!,

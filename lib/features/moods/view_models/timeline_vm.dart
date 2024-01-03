@@ -8,9 +8,21 @@ class TimelineViewModel extends AsyncNotifier<List<MoodModel>> {
   late final MoodRepository _repository;
   Future<List<MoodModel>> _fetchMoods() async {
     final result = await _repository.getMoods();
-    final moodModels =
-        result.docs.map((doc) => MoodModel.fromJson(doc.data())).toList();
+    final moodModels = result.docs.map((doc) {
+      final json = doc.data();
+      json["id"] = doc.id;
+      return MoodModel.fromJson(json);
+    }).toList();
     return moodModels;
+  }
+
+  Future<void> deleteMood(String id) async {
+    await _repository.deleteMood(id);
+    if (state.value == null) {
+      return;
+    }
+    state.value!.removeWhere((element) => element.id == id);
+    state = AsyncData([...state.value!]);
   }
 
   Future<void> refreshMoods() async {
