@@ -2,7 +2,7 @@ import 'package:challenge/commons/navs/main_navigation.dart';
 import 'package:challenge/features/auths/repos/auth_repo.dart';
 import 'package:challenge/features/auths/screens/sign_in_screen.dart';
 import 'package:challenge/features/auths/screens/sign_up_screen.dart';
-import 'package:challenge/features/timelines/screens/timeline_screen.dart';
+import 'package:challenge/features/moods/views/timeline_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +33,12 @@ final router = Provider(
       GoRoute(
         name: MainNavigation.routeName,
         path: MainNavigation.routeURL,
-        builder: (context, state) => const MainNavigation(),
+        builder: (context, state) {
+          final tabString = state.pathParameters["tab"]!;
+          return MainNavigation(
+            tabString: tabString,
+          );
+        },
       ),
     ],
   ),

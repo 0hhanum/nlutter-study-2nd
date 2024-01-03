@@ -2,7 +2,7 @@ import 'package:challenge/commons/utils.dart';
 import 'package:challenge/features/auths/screens/sign_in_screen.dart';
 import 'package:challenge/features/auths/screens/widgets/auth_screen.dart';
 import 'package:challenge/features/auths/view_models/sign_up_vm.dart';
-import 'package:challenge/features/timelines/screens/timeline_screen.dart';
+import 'package:challenge/features/moods/views/timeline_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
