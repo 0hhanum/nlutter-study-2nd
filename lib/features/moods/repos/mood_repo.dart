@@ -10,6 +10,12 @@ class MoodRepository {
     final moodJson = mood.toJson();
     await _db.collection(moodCollection).add(moodJson);
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getMoods() async {
+    final query =
+        _db.collection(moodCollection).orderBy("createdAt", descending: true);
+    return query.get();
+  }
 }
 
 final moodRepoProvider = Provider((ref) => MoodRepository());

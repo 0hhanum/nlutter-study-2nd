@@ -25,12 +25,11 @@ class MoodModel {
     required this.createdAt,
   });
 
-  MoodModel.fromJson({
-    required this.text,
-    required this.uid,
-    required mood,
-    required this.createdAt,
-  }) : mood = Mood.values.firstWhere((value) => value.name == mood);
+  MoodModel.fromJson(Map<String, dynamic> json)
+      : text = json["text"]!,
+        uid = json["uid"]!,
+        createdAt = json["createdAt"]!,
+        mood = Mood.values.firstWhere((value) => value.name == json["mood"]);
 
   Map<String, dynamic> toJson() {
     return {

@@ -51,6 +51,7 @@ class PostScreenState extends ConsumerState<PostScreen> {
       );
       return;
     }
+    // TODO : add textField controller and init text and mood state
     context.go("/timeline");
   }
 
